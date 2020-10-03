@@ -13,8 +13,18 @@ def is_prime(n: int) -> bool:
     >>> is_prime(8)
     False
     """
-    # PUT YOUR CODE HERE
-    pass
+    k=2
+    simple=True
+    if n==0 or n==1:
+        simple = False
+        return simple
+    while k <= n**0.5:
+        if n%k != 0:
+            k+=1
+        if n%k==0:
+            simple=False
+            return simple
+    return simple
 
 
 def gcd(a: int, b: int) -> int:
