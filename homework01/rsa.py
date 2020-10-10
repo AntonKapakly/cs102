@@ -14,17 +14,14 @@ def is_prime(n: int) -> bool:
     False
     """
     k = 2
-    simple = True
     if n == 0 or n == 1:
-        simple = False
-        return simple
+        return False
     while k <= n ** 0.5:
         if n % k != 0:
             k += 1
         if n % k == 0:
-            simple = False
-            return simple
-    return simple
+            return False
+    return True
 
 
 def gcd(a: int, b: int) -> int:
@@ -38,12 +35,11 @@ def gcd(a: int, b: int) -> int:
     """
     if a == 0 or b == 0:
         return max(a, b)
-    else:
-        while (a - b) != 0:
-            if a > b:
-                a -= b
-            else:
-                b -= a
+    while (a - b) != 0:
+        if a > b:
+            a -= b
+        else:
+            b -= a
     return a
 
 
@@ -55,14 +51,15 @@ def multiplicative_inverse(e: int, phi: int) -> int:
     >>> multiplicative_inverse(7, 40)
     23
     """
-    k = 0
-    t = 1 + k * phi
-    if phi == 1:
-        return 0
-    while t % e != 0:
-        k += 1
-        t = 1 + k * phi
-    return t // e
+    divs = []
+    true_phi=phi
+    while e%phi!=0:
+        divs.append(e//phi)
+        e, phi = phi, e%phi
+    x, y = 0, 1
+    for div in reversed(divs):
+        y, x= x - y * div, y
+    return x%true_phi
 
 
 def generate_keypair(
