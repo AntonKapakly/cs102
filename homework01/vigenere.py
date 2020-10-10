@@ -12,10 +12,10 @@ def encrypt_vigenere(plaintext: str, keyword: str) -> str:
     ciphertext = ""
     j = 0
     for i in plaintext:
-        if ord('A') <= ord(i) <= ord('Z'):
+        if ord("A") <= ord(i) <= ord("Z"):
             shift = ord(keyword[j % len(keyword)]) - ord("A")
             ciphertext += chr(ord("A") + (ord(i) - ord("A") + shift) % 26)
-        elif ord('a') <= ord(i) <= ord('z'):
+        elif ord("a") <= ord(i) <= ord("z"):
             shift = ord(keyword[j % len(keyword)]) - ord("a")
             ciphertext += chr(ord("a") + (ord(i) - ord("a") + shift) % 26)
         else:
@@ -38,10 +38,10 @@ def decrypt_vigenere(ciphertext: str, keyword: str) -> str:
     plaintext = ""
     j = 0
     for i in ciphertext:
-        if ord('A') <= ord(i) <= ord('Z'):
+        if ord("A") <= ord(i) <= ord("Z"):
             shift = ord(keyword[j % len(keyword)]) - ord("A")
             plaintext += chr(ord("A") + (ord(i) - ord("A") - shift) % 26)
-        elif ord('a') <= ord(i) <= ord('z'):
+        elif ord("a") <= ord(i) <= ord("z"):
             shift = ord(keyword[j % len(keyword)]) - ord("a")
             plaintext += chr(ord("a") + (ord(i) - ord("a") - shift) % 26)
         else:

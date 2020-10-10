@@ -52,14 +52,14 @@ def multiplicative_inverse(e: int, phi: int) -> int:
     23
     """
     divs = []
-    true_phi=phi
-    while e%phi!=0:
-        divs.append(e//phi)
-        e, phi = phi, e%phi
+    true_phi = phi
+    while e % phi != 0:
+        divs.append(e // phi)
+        e, phi = phi, e % phi
     x, y = 0, 1
     for div in reversed(divs):
-        y, x= x - y * div, y
-    return x%true_phi
+        y, x = x - y * div, y
+    return x % true_phi
 
 
 def generate_keypair(
