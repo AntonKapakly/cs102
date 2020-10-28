@@ -211,6 +211,7 @@ def generate_sudoku(N: int) -> tp.List[tp.List[str]]:
     while grid is None:
         grid = solve(clear_grid)
     import random
+
     count_dots = 81 - min(N, 81)
     while count_dots:
         line = random.randint(0, 8)
