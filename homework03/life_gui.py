@@ -1,6 +1,6 @@
-import pygame  # type: ignore
+import pygame
 
-from life import GameOfLife  # type: ignore
+from life import GameOfLife
 from ui import UI
 
 
@@ -40,7 +40,9 @@ class GUI(UI):
                 )
                 sizes = self.cell_size
                 pygame.draw.rect(
-                    self.screen, colors, (i * sizes + 1, j * sizes + 1, sizes - 1, sizes - 1)
+                    self.screen,
+                    colors,
+                    (i * sizes + 1, j * sizes + 1, sizes - 1, sizes - 1),
                 )
 
     def run(self) -> None:

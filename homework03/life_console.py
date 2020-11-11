@@ -1,7 +1,7 @@
 import curses
 
-from life import GameOfLife  # type: ignore
-from ui import UI  # type: ignore
+from life import GameOfLife
+from ui import UI
 
 
 class Console(UI):

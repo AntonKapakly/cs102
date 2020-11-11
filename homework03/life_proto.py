@@ -1,8 +1,8 @@
 import random
 import typing as tp
 
-import pygame  # type: ignore
-from pygame.locals import *  # type: ignore
+import pygame  #
+from pygame.locals import *
 
 Cell = tp.Tuple[int, int]
 Cells = tp.List[int]
@@ -97,7 +97,9 @@ class GameOfLife:
                 colors = pygame.Color("Green") if self.grid[i][j] else pygame.Color("white")
                 sizes = self.cell_size
                 pygame.draw.rect(
-                    self.screen, colors, (i * sizes + 1, j * sizes + 1, sizes - 1, sizes - 1)
+                    self.screen,
+                    colors,
+                    (i * sizes + 1, j * sizes + 1, sizes - 1, sizes - 1),
                 )
 
     def get_neighbours(self, cell: Cell) -> Cells:
