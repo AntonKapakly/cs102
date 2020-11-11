@@ -54,9 +54,8 @@ class GameOfLife:
                 if self.curr_generation[y][x] == 1:
                     if 2 <= life_cnt <= 3:
                         grid_update[y][x] = 1
-                else:
-                    if life_cnt == 3:
-                        grid_update[y][x] = 1
+                elif life_cnt == 3:
+                    grid_update[y][x] = 1
         return grid_update
 
     def step(self) -> None:

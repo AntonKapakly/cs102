@@ -2,7 +2,6 @@ import random
 import typing as tp
 
 import pygame  # type: ignore
-# import pygame
 from pygame.locals import *  # type: ignore
 
 Cell = tp.Tuple[int, int]
@@ -143,13 +142,6 @@ class GameOfLife:
                 if self.grid[i][j] == 1:
                     if 2 <= life_cnt <= 3:
                         grid_update[i][j] = 1
-                else:
-                    if life_cnt == 3:
-                        grid_update[i][j] = 1
+                elif life_cnt == 3:
+                    grid_update[i][j] = 1
         return grid_update
-
-
-if __name__ == "__main__":
-    game = GameOfLife(400, 400, 50)
-    game.grid = game.create_grid(True)
-    game.run()
