@@ -1,7 +1,7 @@
 import random
 import typing as tp
 
-import pygame  #
+import pygame
 from pygame.locals import *
 
 Cell = tp.Tuple[int, int]
@@ -147,3 +147,9 @@ class GameOfLife:
                 elif life_cnt == 3:
                     grid_update[i][j] = 1
         return grid_update
+
+
+if __name__ == "__main__":
+    game = GameOfLife(400, 400, 50)
+    game.grid = game.create_grid(True)
+    game.run()

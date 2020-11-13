@@ -31,3 +31,8 @@ class Console(UI):
             self.life.step()
             screen.refresh()
         curses.endwin()
+
+
+if __name__ == "__main__":
+    gui = Console(GameOfLife((20, 50), True, max_generations=400))
+    gui.run()
