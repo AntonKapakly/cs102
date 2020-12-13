@@ -29,8 +29,8 @@ def checkout(gitdir: pathlib.Path, obj_name: str) -> None:
                 pass
     form, content = read_object(obj_name, gitdir)
     sha = commit_parse(content)
-    for paths, content in find_tree_files(sha, gitdir):
+    for paths, content in find_tree_files(sha, gitdir): #type:ignore
         if not paths.parent.exists():
             paths.parent.mkdir(parents=True)
         with paths.open("w") as file:
-            file.write(content)
+            file.write(content) #type:ignore
