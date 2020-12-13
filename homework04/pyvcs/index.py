@@ -26,29 +26,108 @@ class GitIndexEntry(tp.NamedTuple):
 
     def pack(self) -> bytes:
         # PUT YOUR CODE HERE
-        ...
+        values = self[:-1] + (self[-1].encode(),)
+        len_name = len(self.name.encode())
+        t = 8 - (6 + len(self.name)) % 8
+        packed = struct.pack(f">10I20sh{len_name}s{t}x", *values)
+        return packed
 
     @staticmethod
     def unpack(data: bytes) -> "GitIndexEntry":
         # PUT YOUR CODE HERE
-        ...
+        form = ">10I20sh"
+        len_name = data.find(b"\x00", struct.calcsize(form)) - struct.calcsize(form)
+        form += f"{len_name}s{8 - (6 + len_name) % 8}x"
+        res = struct.unpack_from(form, data)
+        return GitIndexEntry(
+            res[0],
+            res[1],
+            res[2],
+            res[3],
+            res[4],
+            res[5] & 0xFFFFFFFF,
+            res[6],
+            res[7],
+            res[8],
+            res[9],
+            res[10],
+            res[11],
+            res[12].decode(),
+        )
 
 
 def read_index(gitdir: pathlib.Path) -> tp.List[GitIndexEntry]:
     # PUT YOUR CODE HERE
-    ...
+    entries = []
+    path = gitdir / "index"
+    if path.exists():
+        with path.open("rb") as file:
+            content = file.read()
+        title = struct.unpack_from("!4sLL", content)
+        j = struct.calcsize("!4sLL")
+        for i in range(title[2]):
+            entry = GitIndexEntry.unpack(content[j:])
+            entry_len = struct.calcsize(
+                f">10I20sh{len(entry.name)}s{8 - (6 + len(entry.name)) % 8}x"
+            )
+            j += entry_len
+            entries.append(entry)
+        sha = content[j:].hex()
+        return sorted(entries, key=lambda x: x.name)
+    return entries
 
 
 def write_index(gitdir: pathlib.Path, entries: tp.List[GitIndexEntry]) -> None:
     # PUT YOUR CODE HERE
-    ...
+    content = struct.pack("!4sLL", "DIRC".encode(), 2, len(entries))
+    for e in entries:
+        content += e.pack()
+    content += hashlib.sha1(content).digest()
+    with open(gitdir / "index", "wb") as file:
+        file.write(content)
 
 
 def ls_files(gitdir: pathlib.Path, details: bool = False) -> None:
     # PUT YOUR CODE HERE
-    ...
+    index = read_index(gitdir)
+    if details:
+        for i in index:
+            print(oct(i.mode)[2:], i.sha1.hex(), 0, end="\t")
+            print(i.name)
+    else:
+        print("\n".join([i.name for i in index]))
 
 
 def update_index(gitdir: pathlib.Path, paths: tp.List[pathlib.Path], write: bool = True) -> None:
     # PUT YOUR CODE HERE
-    ...
+    entries = []
+    index_path = gitdir / "index"
+    for p in paths:
+        stat = os.stat(p)
+        with p.open("r") as file:
+            content = file.read().encode()
+        sha1 = hash_object(content, "blob", write=write)
+        entries.append(
+            GitIndexEntry(
+                ctime_s=round(stat.st_ctime),
+                ctime_n=0,
+                mtime_s=round(stat.st_mtime),
+                mtime_n=0,
+                dev=stat.st_dev,
+                ino=stat.st_ino,
+                mode=stat.st_mode,
+                uid=stat.st_uid,
+                gid=stat.st_gid,
+                size=stat.st_size,
+                sha1=bytes.fromhex(sha1),
+                flags=len(p.name),
+                name=str(p),
+            )
+        )
+
+    if (index_path).exists():
+        index = read_index(gitdir)
+        index += entries
+        write_index(gitdir, index)
+    else:
+        write_index(gitdir, entries)
