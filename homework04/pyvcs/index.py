@@ -119,7 +119,7 @@ def update_index(gitdir: pathlib.Path, paths: tp.List[pathlib.Path], write: bool
                 uid=stat.st_uid,
                 gid=stat.st_gid,
                 size=stat.st_size,
-                sha1=bytes.fromhex(sha1),
+                sha1=bytes.fromhex(sha1),  # type:ignore
                 flags=len(p.name),
                 name=str(p),
             )
