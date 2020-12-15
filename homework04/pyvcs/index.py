@@ -122,7 +122,7 @@ def update_index(gitdir: pathlib.Path, paths: tp.List[pathlib.Path], write: bool
                 stat.st_size,
                 sha1,
                 7,
-                "/".join(path.parts),
+                "/".join(p.parts),
             )
         )
     write_index(gitdir, entries)
