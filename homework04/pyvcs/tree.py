@@ -72,8 +72,9 @@ def commit_tree(
     if not author:
         author = (
             os.getenv("GIT_AUTHOR_NAME", default="Anton")
-            + " "
+            + " <"
             + os.getenv("GIT_AUTHOR_EMAIL", default="kapakly0@gmail.com")
+            + ">"
         )
     data = ""
     data += f"tree {tree}\n"
