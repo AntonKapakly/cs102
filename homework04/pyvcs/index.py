@@ -100,34 +100,29 @@ def ls_files(gitdir: pathlib.Path, details: bool = False) -> None:
 
 def update_index(gitdir: pathlib.Path, paths: tp.List[pathlib.Path], write: bool = True) -> None:
     # PUT YOUR CODE HERE
-    entries = []
-    index_path = gitdir / "index"
+    entries = read_index(gitdir)
     for p in paths:
         stat = os.stat(p)
         with p.open("r") as file:
             content = file.read().encode()
-        sha1 = hash_object(content, "blob", write=write)
+        sha1 = hash_object(content, fmt="blob", write=write, hex=False)
+        if isinstance(sha1, str):
+            sha1 = sha1.encode()
         entries.append(
             GitIndexEntry(
-                ctime_s=round(stat.st_ctime),
-                ctime_n=0,
-                mtime_s=round(stat.st_mtime),
-                mtime_n=0,
-                dev=stat.st_dev,
-                ino=stat.st_ino,
-                mode=stat.st_mode,
-                uid=stat.st_uid,
-                gid=stat.st_gid,
-                size=stat.st_size,
-                sha1=bytes.fromhex(sha1),  # type:ignore
-                flags=len(p.name),
-                name=str(p),
+                int(stat.st_ctime),
+                0,
+                int(stat.st_mtime),
+                0,
+                stat.st_dev,
+                stat.st_ino & 0xFFFFFFFF,
+                stat.st_mode,
+                stat.st_uid,
+                stat.st_gid,
+                stat.st_size,
+                sha1,
+                7,
+                "/".join(path.parts),
             )
         )
-
-    if (index_path).exists():
-        index = read_index(gitdir)
-        index += entries
-        write_index(gitdir, index)
-    else:
-        write_index(gitdir, entries)
+    write_index(gitdir, entries)
