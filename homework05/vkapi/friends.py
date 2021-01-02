@@ -36,7 +36,7 @@ def get_friends(
     :return: Список идентификаторов друзей пользователя или список пользователей.
     """
     params = {"user_id": user_id, "count": count, "offset": offset, "fields": fields}
-    res = session.get("/friends.get", params=params)
+    res = session.get("friends.get", params=params)
     if res.status_code != 200:
         raise APIError(res.json()["error"]["error_msg"])
     return FriendsResponse(**res.json()["response"])
@@ -87,7 +87,7 @@ def get_mutual(
             "count": count,
             "offset": offset,
         }
-        response = session.get(f"/friends.getMutual", params=params)
+        response = session.get(f"friends.getMutual", params=params)
         if response.status_code != 200:
             raise APIError
         offset += 100

@@ -41,14 +41,14 @@ class Session(requests.Session):
             status_forcelist=[429, 500, 502, 503, 504],
             backoff_factor=backoff_factor,
         )
-        self.session = requests.Session()
+
         adapter = HTTPAdapter(max_retries=retries)
-        self.session.mount(self.base_url, adapter)
+        self.mount(self.base_url, adapter)
 
     def get(self, url: str, *args: tp.Any, **kwargs: tp.Any) -> requests.Response:  # type:ignore
 
-        return self.session.get(self.base_url + url, *args, **kwargs)
+        return super().get(self.base_url + "/" + url, *args, **kwargs)
 
     def post(self, url: str, *args: tp.Any, **kwargs: tp.Any) -> requests.Response:  # type:ignore
 
-        return self.session.post(self.base_url + url, *args, **kwargs)
+        return super().post(self.base_url + "/" + url, *args, **kwargs)

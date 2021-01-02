@@ -97,7 +97,7 @@ def get_posts_2500(
     access_token = VK_CONFIG["access_token"]
     data = {"code": code_s, "access_token": access_token, "v": VK_CONFIG["version"]}
 
-    response = session.post("/execute", data=data).json()["response"]
+    response = session.post("execute", data=data).json()["response"]
     if "error" in response:
         raise APIError(response["error"]["error_msg"])
     return response["items"]
@@ -151,7 +151,7 @@ def get_wall_execute(
     )
 
     data = {"code": code_s, "access_token": VK_CONFIG["access_token"], "v": VK_CONFIG["version"]}
-    response = session.post("/execute", data=data).json()
+    response = session.post("execute", data=data).json()
     if "error" in response:
         raise APIError(response["error"]["error_msg"])
     if progress is None:
