@@ -15,14 +15,14 @@ def age_predict(user_id: int) -> tp.Optional[float]:
     :param user_id: Идентификатор пользователя.
     :return: Медианный возраст пользователя.
     """
-    lists = get_friends(user_id, fields="bdate").items
+    lists = get_friends(user_id, fields="bdate").items  # type:ignore
     mas = []
     c = 0
     current_date = datetime.now().date().year
     for dicts in lists:
-        if "bdate" in dicts.keys():
+        if "bdate" in dicts.keys():  # type:ignore
             c = 1
-            b_year = dicts["bdate"][-4:]
+            b_year = dicts["bdate"][-4:]  # type:ignore
             if "." not in b_year:
                 mas.append(int(current_date) - int(b_year))
     if c:

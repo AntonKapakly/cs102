@@ -20,7 +20,10 @@ class FriendsResponse:
 
 
 def get_friends(
-    user_id: int, count: int = 5000, offset: int = 0, fields: tp.Optional[tp.List[str]] = None
+    user_id: int,
+    count: int = 5000,
+    offset: int = 0,
+    fields: tp.Optional[tp.List[str]] = None,  # type:ignore
 ) -> FriendsResponse:
     """
     Получить список идентификаторов друзей пользователя или расширенную информацию
@@ -92,11 +95,11 @@ def get_mutual(
         if isinstance(response.json()["response"], list):
             responses.extend(response.json()["response"])
         else:
-            response.append(
+            responses.append(
                 MutualFriends(
-                    id=response["response"]["id"],
-                    common_friends=response["response"]["common_friends"],
-                    common_count=response["response"]["common_count"],
+                    id=response.json()["response"]["id"],
+                    common_friends=response.json()["response"]["common_friends"],
+                    common_count=response.json()["response"]["common_count"],
                 )
             )
         time.sleep(1)
