@@ -37,7 +37,7 @@ def get_friends(
     """
     params = {"user_id": user_id, "count": count, "offset": offset, "fields": fields}
     res = session.get("friends.get", params=params)
-    if res.status_code != 200:
+    if "error" in res.json():
         raise APIError(res.json()["error"]["error_msg"])
     return FriendsResponse(**res.json()["response"])
 
@@ -74,10 +74,10 @@ def get_mutual(
         target_uids = [target_uid]
 
     responses = []
-    if progress:
-        prog = progress(range(math.ceil(len(target_uids) / 100)))
-    else:
-        prog = range(math.ceil(len(target_uids) / 100))
+
+    if progress is None:
+        progress = lambda x: x
+    prog = progress(range(math.ceil(len(target_uids) / 100)))
     for p in prog:
         params = {
             "target_uid": target_uid,
@@ -88,8 +88,8 @@ def get_mutual(
             "offset": offset,
         }
         response = session.get(f"friends.getMutual", params=params)
-        if response.status_code != 200:
-            raise APIError
+        if "error" in response.json():
+            raise APIError(response.json()["error"]["error_msg"])
         offset += 100
 
         if isinstance(response.json()["response"], list):
