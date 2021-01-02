@@ -3,13 +3,12 @@ import pyLDAvis.gensim
 from gensim.corpora import Dictionary
 from textacy import preprocessing
 from tqdm import tqdm
-
 from vkapi.wall import get_wall_execute
 
 
 def example():
     posts = get_wall_execute(domain="rbc", count=5000, max_count=1000, progress=tqdm)
-    stopwords = list(map(str.strip, open("stop_words.txt")))
+    stopwords = list(map(str.strip, open("research/stop_words.txt")))
     text_no_urls = map(preprocessing.replace.replace_urls, posts.text.dropna().to_list())
     text_no_punct = map(preprocessing.remove_punctuation, text_no_urls)
     text_no_emojis = map(preprocessing.replace.replace_emojis, text_no_punct)

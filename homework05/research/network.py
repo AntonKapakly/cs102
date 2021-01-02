@@ -5,7 +5,6 @@ import community as community_louvain
 import matplotlib.pyplot as plt
 import networkx as nx
 import pandas as pd
-
 from vkapi.friends import get_friends, get_mutual
 
 
@@ -18,7 +17,20 @@ def ego_network(
     :param user_id: Идентификатор пользователя, для которого строится граф друзей.
     :param friends: Идентификаторы друзей, между которыми устанавливаются связи.
     """
-    pass
+    graf = []
+    if friends is None:
+        friends_fields = get_friends(user_id, fields=["nickname", "is_closed, deactivate"]).items  # type: ignore
+        friends = [
+            friend["id"]  # type: ignore
+            for friend in friends_fields
+            if not friend.get("deactivate") and not friend.get("is_closed")  # type: ignore
+        ]
+    mutuals = get_mutual(user_id, target_uids=friends)
+    for mutual in mutuals:
+        if isinstance(mutual, dict):
+            for common in mutual["common_friends"]:
+                graf.append((mutual["id"], common))
+    return graf
 
 
 def plot_ego_network(net: tp.List[tp.Tuple[int, int]]) -> None:
