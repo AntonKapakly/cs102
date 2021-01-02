@@ -21,9 +21,9 @@ def age_predict(user_id: int) -> tp.Optional[float]:
     current_date = datetime.now().date().year
     for dicts in lists:
         if "bdate" in dicts.keys():  # type:ignore
-            c = 1
             b_year = dicts["bdate"][-4:]  # type:ignore
             if "." not in b_year:
+                c = 1
                 mas.append(int(current_date) - int(b_year))
     if c:
         return median(mas)
