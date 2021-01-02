@@ -18,17 +18,56 @@ type KeyPair struct {
 }
 
 func isPrime(n int) bool {
-    // PUT YOUR CODE HERE
+    var k int = 2
+    if (n == 0) || (n == 1) {
+        return false
+    }
+    for k <= (n**0.5) {
+        if n % k != 0 {
+            k++
+        }
+        if n % k == 0 {
+            return false
+        }
+    }
+    return true
 }
 
 
 func gcd(a int, b int) int {
-    // PUT YOUR CODE HERE
+    if (a == 0) || (b == 0) {
+        if a > b {
+            return a
+        }
+        return b
+    }
+    for (a - b) != 0 {
+        if a > b {
+            a -= b
+        }
+        else { 
+            b -= a
+        }
+    }
+    return a
 }
 
 
 func multiplicativeInverse(e int, phi int) int {
-    // PUT YOUR CODE HERE
+    divs := make([]int, 0)
+    var true_phi = phi
+    for e % phi != 0 {
+        divs = append(divs, e / phi)
+        e, phi := phi, e % phi
+    }
+    var x := 0
+    var y := 1
+    for i := (len(divs) - 1); i > -1; i-- {
+        y := x - (y * divs[i])
+        x := y
+    }
+    return x % true_phi
+
 }
 
 
@@ -40,10 +79,10 @@ func GenerateKeypair(p int, q int) (KeyPair, error) {
     }
 
     // n = pq
-    // PUT YOUR CODE HERE
+    n = p * q
 
     // phi = (p-1)(q-1)
-    // PUT YOUR CODE HERE
+    phi = (p - 1) * (q - 1)
 
     e := rand.Intn(phi - 1) + 1
     g := gcd(e, phi)
