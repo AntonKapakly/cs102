@@ -5,6 +5,7 @@ import typing as tp
 
 import requests
 from tqdm import tqdm
+
 from vkapi import session
 from vkapi.config import VK_CONFIG
 from vkapi.exceptions import APIError
