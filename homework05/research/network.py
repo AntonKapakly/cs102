@@ -17,9 +17,9 @@ def ego_network(
     :param user_id: Идентификатор пользователя, для которого строится граф друзей.
     :param friends: Идентификаторы друзей, между которыми устанавливаются связи.
     """
-    graf = []
+    graph = []
     if friends is None:
-        friends_fields = get_friends(user_id, fields=["nickname", "is_closed, deactivate"]).items  # type: ignore
+        friends_fields: tp.List[tp.Dict[str, tp.Any]] = get_friends(user_id, fields=["nickname", "is_closed, deactivate"]).items  # type: ignore
         friends = [
             friend["id"]  # type: ignore
             for friend in friends_fields
@@ -29,8 +29,8 @@ def ego_network(
     for mutual in mutuals:
         if isinstance(mutual, dict):
             for common in mutual["common_friends"]:
-                graf.append((mutual["id"], common))
-    return graf
+                graph.append((mutual["id"], common))
+    return graph
 
 
 def plot_ego_network(net: tp.List[tp.Tuple[int, int]]) -> None:
