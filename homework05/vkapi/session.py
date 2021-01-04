@@ -35,20 +35,16 @@ class Session(requests.Session):
     ) -> None:
         super().__init__()
         self.base_url = base_url
-
         retries = Retry(
             total=max_retries,
             status_forcelist=[429, 500, 502, 503, 504],
             backoff_factor=backoff_factor,
         )
-
         adapter = HTTPAdapter(max_retries=retries)
         self.mount(self.base_url, adapter)
 
     def get(self, url: str, *args: tp.Any, **kwargs: tp.Any) -> requests.Response:  # type:ignore
-
         return super().get(self.base_url + "/" + url, *args, **kwargs)
 
     def post(self, url: str, *args: tp.Any, **kwargs: tp.Any) -> requests.Response:  # type:ignore
-
         return super().post(self.base_url + "/" + url, *args, **kwargs)
