@@ -84,7 +84,7 @@ def get_mutual(
     prog = progress(range(math.ceil(len(target_uids) / 100)))
     for p in prog:
         params = {
-            "target_uid": target_uid,
+            "target_uid": target_uid if target_uid is not None else "",
             "source_uid": source_uid if source_uid is not None else "",
             "target_uids": ", ".join(map(str, target_uids)),
             "order": order,
