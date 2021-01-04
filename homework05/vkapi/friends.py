@@ -34,7 +34,12 @@ def get_friends(
     :param fields: Список полей, которые нужно получить для каждого пользователя.
     :return: Список идентификаторов друзей пользователя или список пользователей.
     """
-    params = {"user_id": user_id, "count": count, "offset": offset, "fields": fields}
+    params = {
+        "user_id": user_id if user_id is not None else "",
+        "count": count,
+        "offset": offset,
+        "fields": ",".join(fields) if fields is not None else "",
+    }
     res = session.get("friends.get", params=params)
     if "error" in res.json():
         raise APIError(res.json()["error"]["error_msg"])
@@ -80,10 +85,10 @@ def get_mutual(
     for p in prog:
         params = {
             "target_uid": target_uid,
-            "source_uid": source_uid,
+            "source_uid": source_uid if source_uid is not None else "",
             "target_uids": ", ".join(map(str, target_uids)),
             "order": order,
-            "count": count,
+            "count": count if count is not None else "",
             "offset": offset,
         }
         response = session.get(f"friends.getMutual", params=params)
