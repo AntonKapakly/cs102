@@ -4,9 +4,8 @@ import requests
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
 
-
 class TimeoutHTTPAdapter(HTTPAdapter):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, timeout, *args, **kwargs):
         self.timeout = timeout
         if "timeout" in kwargs:
             self.timeout = kwargs["timeout"]
@@ -40,7 +39,7 @@ class Session(requests.Session):
             status_forcelist=[429, 500, 502, 503, 504],
             backoff_factor=backoff_factor,
         )
-        adapter = HTTPAdapter(max_retries=retries)
+        adapter = TimeoutHTTPAdapter(timeout=timeout, max_retries=retries)
         self.mount(self.base_url, adapter)
 
     def get(self, url: str, *args: tp.Any, **kwargs: tp.Any) -> requests.Response:  # type:ignore
