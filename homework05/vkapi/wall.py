@@ -151,17 +151,14 @@ def get_wall_execute(
 
     data = {"code": code_s, "access_token": VK_CONFIG["access_token"], "v": VK_CONFIG["version"]}
     response = session.post("execute", data=data).json()
+    # fmt: off
+    max_requests = math.ceil(count / max_count if count != 0 else response["response"]["count"] / max_count)
+    # fmt: on
     if "error" in response:
         raise APIError(response["error"]["error_msg"])
     if progress is None:
         progress = lambda x: x
-    for n in progress(
-        range(
-            math.ceil(
-                count / max_count if count != 0 else response["response"]["count"] / max_count
-            )
-        )
-    ):
+    for n in progress(range(max_requests)):
         posts = posts.append(
             json_normalize(
                 get_posts_2500(
