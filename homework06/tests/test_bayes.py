@@ -1,6 +1,7 @@
+import csv
+
 import pytest
 from bayes import NaiveBayesClassifier, argmax, remove_punctuation
-import csv
 
 
 @pytest.mark.parametrize("alpha", [0.1, 0.33, 0.5, 1])

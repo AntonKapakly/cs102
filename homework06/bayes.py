@@ -1,7 +1,7 @@
-from collections import defaultdict, Counter
-from math import log
-import typing as tp
 import string
+import typing as tp
+from collections import Counter, defaultdict
+from math import log
 
 
 def remove_punctuation(word: str) -> str:

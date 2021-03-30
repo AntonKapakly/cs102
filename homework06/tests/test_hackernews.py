@@ -1,5 +1,6 @@
 import typing as tp
 from math import log
+
 import pytest
 from db import Base, News
 from hackernews import (

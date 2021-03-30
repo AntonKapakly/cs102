@@ -1,11 +1,12 @@
-from bottle import route, run, template, request, redirect
-from scraputils import get_news, extract_next_page
-from db import News, session
-from bs4 import BeautifulSoup
-import requests
 import typing as tp
 from math import log
+
+import requests
 from bayes import NaiveBayesClassifier, remove_punctuation
+from bottle import redirect, request, route, run, template
+from bs4 import BeautifulSoup
+from db import News, session
+from scraputils import extract_next_page, get_news
 from sqlalchemy.orm.session import Session
 
 URL = "https://news.ycombinator.com/"

@@ -1,8 +1,8 @@
+from typing import List
+
 import requests
 from bs4 import BeautifulSoup
 from db import News
-
-from typing import List
 
 
 def extract_news(parser: BeautifulSoup) -> List[News]:
