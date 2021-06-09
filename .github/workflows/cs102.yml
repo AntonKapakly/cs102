@@ -17,9 +17,9 @@ jobs:
         pip install black mypy pylint pygame pyfakefs
     - name: Install project dependencies
       run: |
-        if [ -f ${{ github.head_ref }}/requirements.txt ];
+        if [ -f requirements.txt ];
         then
-          pip install -r ${{ github.head_ref }}/requirements.txt
+          pip install -r requirements.txt
         fi
     - name: Run isort
       run: |
@@ -33,6 +33,6 @@ jobs:
     - name: Run pylint
       run: |
         pylint --disable=missing-docstring --variable-rgx="[a-z0-9_]{1,30}$" --argument-rgx="^[a-z][a-z0-9]*((_[a-z0-9]+)*)?$" --ignore-patterns="test_.*?py" --exit-zero ${{ github.head_ref }}
-    - name: Run unittests
+    - name: Run pytest
       run: |
-        python -m unittest discover ${{ github.head_ref }}
+        cd  ${{ github.head_ref }}; python -m pytest
