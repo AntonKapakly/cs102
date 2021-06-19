@@ -73,14 +73,10 @@ class BaseHTTPRequestHandler(BaseRequestHandler):
 
     def parse_request(self) -> tp.Optional[HTTPRequest]:
         while True:
-            ready, _, _ = select.select([self.socket], [], [], 1)
-            if not ready:
+            data = self.socket.recv(1024)
+            if not data or data == b"":
                 break
-            else:
-                data = self.socket.recv(1024)
-                if data == b"":
-                    break
-                self.parser.feed_data(data)
+            self.parser.feed_data(data)
         if self._parsed:
             return self.request_klass(
                 self.parser.get_method(), self._url, self._headers, self._body
