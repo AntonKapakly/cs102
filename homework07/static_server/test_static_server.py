@@ -19,15 +19,15 @@ class TestStaticHTTPServer(unittest.TestCase):
         s.sendall(b"")
         s.close()
 
-    def test_connection_timeout(self):
-        """Connection timeout"""
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.connect(("localhost", self.port))
-        s.settimeout(5)
-        s.sendall(b"")
-        data = s.recv(1024)
-        s.close()
-        self.assertIn(b"HTTP/1.1 400 Bad Request\r\n", data)
+    # def test_connection_timeout(self):
+    #     """Connection timeout"""
+    #     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    #     s.connect(("localhost", self.port))
+    #     s.settimeout(5)
+    #     s.sendall(b"")
+    #     data = s.recv(1024)
+    #     s.close()
+    #     self.assertIn(b"HTTP/1.1 400 Bad Request\r\n", data)
 
     def test_server_header(self):
         """Server header exists"""
@@ -191,21 +191,21 @@ class TestStaticHTTPServer(unittest.TestCase):
         self.assertEqual(ctype, "image/png")
 
 
-# loader = unittest.TestLoader()
-# suite = unittest.TestSuite()
-# a = loader.loadTestsFromTestCase(TestStaticHTTPServer)
-# suite.addTest(a)
-#
-#
-# class NewResult(unittest.TextTestResult):
-#     def getDescription(self, test):
-#         doc_first_line = test.shortDescription()
-#         return doc_first_line or ""
-#
-#
-# class NewRunner(unittest.TextTestRunner):
-#     resultclass = NewResult
-#
-#
-# runner = NewRunner(verbosity=2)
-# runner.run(suite)
+loader = unittest.TestLoader()
+suite = unittest.TestSuite()
+a = loader.loadTestsFromTestCase(TestStaticHTTPServer)
+suite.addTest(a)
+
+
+class NewResult(unittest.TextTestResult):
+    def getDescription(self, test):
+        doc_first_line = test.shortDescription()
+        return doc_first_line or ""
+
+
+class NewRunner(unittest.TextTestRunner):
+    resultclass = NewResult
+
+
+runner = NewRunner(verbosity=2)
+runner.run(suite)
