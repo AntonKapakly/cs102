@@ -31,5 +31,5 @@ jobs:
     - name: Run pytests
       run: |
         cd homework07/httpserver; python -m build;pip install dist/httpserver-0.0.1-py3-none-any.whl --force-reinstall
-        cd ../static_server; python static_server.py &> /dev/null &
+        cd ../static_server; python static_server.py &
         python -m pytest
