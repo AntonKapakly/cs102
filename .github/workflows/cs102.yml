@@ -27,5 +27,4 @@ jobs:
         pylint homework08 --exit-zero
     - name: Run mypy
       run: |
-        mypy homework08 --ignore-missing-imports --strict
- 
+        mypy homework08 --ignore-missing-imports 
