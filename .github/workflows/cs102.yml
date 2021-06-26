@@ -21,15 +21,10 @@ jobs:
         fi
     - name: Run black
       run: |
-        black -l 100 --check --diff --color --exclude "test*" homework07
+        black -l 100 --check --diff --color --exclude "test*" homework09
     - name: Run pylint
       run: |
-        pylint homework07 --exit-zero
+        pylint homework09 --exit-zero
     - name: Run mypy
       run: |
-        cd homework07; mypy httpserver --ignore-missing-imports --strict
-    - name: Run pytests
-      run: |
-        cd homework07/httpserver; python -m build;pip install dist/httpserver-0.0.1-py3-none-any.whl --force-reinstall
-        cd ../static_server; python static_server.py &> /dev/null &
-        python -m pytest
+        mypy homework09 --ignore-missing-imports 
