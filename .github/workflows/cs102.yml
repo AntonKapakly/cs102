@@ -27,5 +27,5 @@ jobs:
         pylint homework08 --exit-zero
     - name: Run mypy
       run: |
-        cd homework08; mypy wsgiserver --ignore-missing-imports --strict
+        mypy homework08 --ignore-missing-imports --strict
  
